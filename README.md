@@ -65,7 +65,7 @@
   <div class="card header-card">
     <div>
       <h1><span>💊</span> ระบบคำนวณราคาขาย & %GP Pro</h1>
-      <p class="subtitle">เวอร์ชัน Pure CSS แสดงผลสวยงามครบถ้วน ไม่พึ่งพาสคริปต์ภายนอก</p>
+      <p class="subtitle">โปรแกรมคำนวณราคายาและสินค้า รองรับหน้าร้าน LINE MAN และ Telepharmacy</p>
     </div>
     <div class="btn-group">
       <button onclick="toggleMode('single')" id="btnSingle" class="btn btn-primary">คำนวณเดี่ยว</button>
@@ -99,17 +99,41 @@
             <input type="number" id="s_gp" class="form-control" placeholder="0.00" oninput="calculateSingle('gp')">
           </div>
         </div>
+        <div class="grid-2" style="gap: 12px;">
+          <div class="form-group">
+            <label id="feeLabel">ค่าธรรมเนียมรูดบัตร/QR (%)</label>
+            <input type="number" id="s_fee" class="form-control" value="0" oninput="calculateSingle()">
+          </div>
+          <div class="form-group">
+            <label>ประเภท VAT</label>
+            <select id="s_vat_type" class="form-control" onchange="calculateSingle()">
+              <option value="none">ไม่มี VAT</option>
+              <option value="include">VAT รวมในราคาแล้ว</option>
+              <option value="exclude">VAT นอกเหนือจากราคา</option>
+            </select>
+          </div>
+        </div>
+        <div id="teleFeeBox" class="box-blue hidden space-y-2">
+          <label class="form-group" style="font-size: 12px; font-weight: 600; color: var(--blue-800);">ค่าบริการให้คำปรึกษาเภสัชกร (Professional Fee)</label>
+          <input type="number" id="s_tele_fee" class="form-control" value="100" placeholder="เช่น 100 บาท" oninput="calculateSingle()">
+        </div>
       </div>
-      <div class="box-emerald">
-        <p style="font-weight: 600; color: var(--emerald-900);">ผลลัพธ์การคำนวณ</p>
-        <p style="margin-top: 8px; font-size: 14px; color: var(--emerald-800);">กำไรสุทธิ: <span id="totalProfit" style="font-weight: bold; color: var(--emerald-600);">0.00 บาท</span></p>
+      <div class="box-emerald space-y-4">
+        <p style="font-weight: 600; color: var(--emerald-900); display: flex; justify-content: space-between; align-items: center;">
+          <span>ผลลัพธ์การคำนวณ</span>
+          <span id="res_channel_badge" style="font-size: 12px; padding: 2px 8px; background: #a7f3d0; color: #065f46; border-radius: 9999px;">หน้าร้านปกติ</span>
+        </p>
+        <div style="font-size: 14px; color: var(--emerald-800);">
+          <p>กำไรสุทธิ: <span id="totalProfit" style="font-weight: bold; color: var(--emerald-600); font-size: 18px;">0.00 บาท</span></p>
+          <p style="margin-top: 8px;">%GP สุทธิ: <span id="netGp" style="font-weight: bold; color: var(--emerald-700);">0.00%</span></p>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="multiSection" class="card space-y-6 hidden">
     <h2 class="section-title">📊 ตารางคำนวณหลายรายการพร้อมกัน</h2>
-    <p class="subtitle">ฟังก์ชันตารางหลายรายการพร้อมใช้งาน</p>
+    <p class="subtitle">ฟังก์ชันตารางหลายรายการ</p>
   </div>
 </div>
 
@@ -131,5 +155,63 @@ function toggleMode(mode) {
     btnSingle.className = 'btn btn-secondary';
   }
 }
-function onChannelChange() {}
-function calculateSingle() {}
+
+function onChannelChange() {
+  const channel = document.getElementById('s_channel').value;
+  const feeInput = document.getElementById('s_fee');
+  const feeLabel = document.getElementById('feeLabel');
+  const teleFeeBox = document.getElementById('teleFeeBox');
+  const badge = document.getElementById('res_channel_badge');
+
+  if (channel === 'store') {
+    feeInput.value = '0';
+    feeLabel.innerText = 'ค่าธรรมเนียมรูดบัตร/QR (%)';
+    teleFeeBox.classList.add('hidden');
+    badge.innerText = 'หน้าร้านปกติ';
+  } else if (channel === 'lineman') {
+    feeInput.value = '30';
+    feeLabel.innerText = 'ค่า GP LINE MAN (%)';
+    teleFeeBox.classList.add('hidden');
+    badge.innerText = 'LINE MAN (Delivery)';
+  } else if (channel === 'telepharmacy') {
+    feeInput.value = '30';
+    feeLabel.innerText = 'ค่า GP แพลตฟอร์ม (%)';
+    teleFeeBox.classList.remove('hidden');
+    badge.innerText = 'Telepharmacy';
+  }
+}
+
+function calculateSingle(source) {
+  const cost = parseFloat(document.getElementById('s_cost').value) || 0;
+  let price = parseFloat(document.getElementById('s_price').value) || 0;
+  let targetGp = parseFloat(document.getElementById('s_gp').value) || 0;
+  const feePercent = parseFloat(document.getElementById('s_fee').value) || 0;
+  const channel = document.getElementById('s_channel').value;
+  const teleFee = parseFloat(document.getElementById('s_tele_fee').value) || 0;
+
+  if (source === 'gp' && targetGp > 0 && targetGp < 100) {
+    price = cost / (1 - (targetGp / 100));
+    document.getElementById('s_price').value = price.toFixed(2);
+  } else if (source === 'price' && price > 0) {
+    if (price >= cost) {
+      targetGp = ((price - cost) / price) * 100;
+      document.getElementById('s_gp').value = targetGp.toFixed(2);
+    }
+  }
+
+  let effectivePrice = price;
+  if (channel === 'telepharmacy') {
+    effectivePrice = price + teleFee;
+  }
+
+  const feeAmount = effectivePrice * (feePercent / 100);
+  const netRevenue = effectivePrice - feeAmount;
+  const profit = netRevenue - cost;
+  const netGpCalc = effectivePrice > 0 ? (profit / effectivePrice) * 100 : 0;
+
+  document.getElementById('totalProfit').innerText = profit.toFixed(2) + ' บาท';
+  document.getElementById('netGp').innerText = netGpCalc.toFixed(2) + '%';
+}
+</script>
+</body>
+</html>

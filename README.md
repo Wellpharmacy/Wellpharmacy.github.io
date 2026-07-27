@@ -2,14 +2,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการราคาขายและต้นทุน</title>
+    <title>ระบบจัดการราคาและต้นทุน</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style> body { font-family: 'Sarabun', sans-serif; } </style>
 </head>
 <body class="bg-slate-100 min-h-screen py-6 px-4 flex justify-center">
     
-    <!-- บีบความกว้างไม่ให้ยืดกว้างเกินไปบนจอคอม ให้แสดงผลเป็นทรงมือถือสวยๆ -->
+    <!-- บีบความกว้างไม่ให้ยืดกว้างเกินไปบนจอคอม ให้แสดงผลเป็นทรงมือถือสวยๆ ตรงกลาง -->
     <div class="w-full max-w-md space-y-4">
         
         <!-- Header & Main Navigation Tabs -->
@@ -190,31 +190,52 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT ================= -->
+        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (MULTI-ITEM BILL) ================= -->
         <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <h2 class="text-xs font-bold text-slate-800 border-b pb-3 uppercase tracking-wider">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ</h2>
+            <h2 class="text-xs font-bold text-slate-800 border-b pb-3 uppercase tracking-wider">💳 คำนวณต้นทุนบิลสินค้าหลายรายการ (บัตรเครดิต/ผ่อน)</h2>
             
-            <div class="space-y-3">
+            <!-- ตั้งค่าส่วนกลางของบิล -->
+            <div class="grid grid-cols-2 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">ราคาสินค้าตั้งต้น (บาท)</label>
-                    <input type="number" id="c_base_cost" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="60.00" value="60" oninput="calculateCreditCost()">
+                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูดรวม (%)</label>
+                    <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="calculateBillCredit()">
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">ค่าธรรมเนียมรูด (%)</label>
-                        <input type="number" id="c_card_fee" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="1.00" value="1.00" oninput="calculateCreditCost()">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
-                        <input type="number" id="c_interest_rate" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="0.74" value="0.74" oninput="calculateCreditCost()">
-                    </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
+                    <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="calculateBillCredit()">
                 </div>
             </div>
 
-            <div class="p-4 bg-indigo-50 rounded-2xl border border-indigo-100 space-y-3">
-                <div class="flex flex-col gap-1.5">
-                    <span class="text-xs font-bold text-indigo-900">เลือกจำนวนเดือนที่ต้องการผ่อน:</span>
-                    <select id="c_selected_months" onchange="calculateCreditCost()" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl text-xs font-bold text-indigo-900 outline-none">
+            <!-- ตารางรายการสินค้าในบิล -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-700">รายการสินค้าในบิล</span>
+                    <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700">+ เพิ่มรายการ</button>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-2.5">ชื่อสินค้า / ยา</th>
+                                <th class="p-2.5 text-right w-24">ทุนตั้งต้น</th>
+                                <th class="p-2.5 text-right w-16">จำนวน</th>
+                                <th class="p-2.5 text-center w-10">ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billItemsContainer" class="divide-y divide-slate-100 font-medium text-slate-800">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- เลือกจำนวนงวดผ่อน -->
+            <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-3 shadow-inner">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-indigo-200">ระยะเวลาผ่อนชำระ:</span>
+                    <select id="c_selected_months" onchange="calculateBillCredit()" class="px-3 py-1.5 bg-indigo-800 border border-indigo-700 rounded-xl text-xs font-bold text-white outline-none">
+                        <option value="0">รูดเต็มจำนวน (ไม่ผ่อน)</option>
                         <option value="3">3 เดือน</option>
                         <option value="4">4 เดือน</option>
                         <option value="6" selected>6 เดือน</option>
@@ -222,29 +243,20 @@
                         <option value="12">12 เดือน</option>
                     </select>
                 </div>
-                <div class="bg-white p-3 rounded-xl border border-indigo-100 text-center space-y-1">
-                    <div class="text-[11px] font-bold text-slate-500">ต้นทุนใหม่ต่อหน่วย (งวดที่เลือก):</div>
-                    <div class="text-lg font-extrabold text-indigo-600" id="c_res_total_cost">0.00 บาท</div>
-                    <div class="text-[10px] text-slate-400" id="c_res_monthly_pay">ผ่อนชำระเดือนละ 0.00 บาท</div>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">📊 ตารางเปรียบเทียบทุกระยะเวลา</h3>
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                            <tr>
-                                <th class="p-2.5">รูปแบบ</th>
-                                <th class="p-2.5 text-right">ยอดรวม</th>
-                                <th class="p-2.5 text-right">ต่อเดือน</th>
-                                <th class="p-2.5 text-right">ต้นทุนใหม่</th>
-                            </tr>
-                        </thead>
-                        <tbody id="c_table_body" class="divide-y divide-slate-100 font-medium text-slate-800">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
+                
+                <div class="pt-2 border-t border-indigo-800 space-y-1.5 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-indigo-300">ยอดรวมทุนตั้งต้นทั้งบิล:</span>
+                        <span id="bill_total_base" class="font-bold text-white">0.00 บาท</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-indigo-300">ยอดชำระสุทธิ (รวมค่าธรรมเนียม/ดอกเบี้ย):</span>
+                        <span id="bill_total_net" class="font-bold text-amber-400 text-sm">0.00 บาท</span>
+                    </div>
+                    <div class="flex justify-between" id="monthlyPayContainer">
+                        <span class="text-indigo-300">ยอดผ่อนชำระต่อเดือน:</span>
+                        <span id="bill_monthly_pay" class="font-bold text-cyan-300">0.00 บาท</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,9 +267,15 @@
         let currentStoreNetPrice = 0;
         let currentStoreCost = 0;
 
+        // ข้อมูลตัวอย่างเริ่มต้นในบิล
+        let billItems = [
+            { name: "Amoxycillin 500mg", cost: 60, qty: 10 },
+            { name: "Paracetamol 500mg", cost: 25, qty: 50 }
+        ];
+
         window.onload = function() { 
             calculateStore(); 
-            calculateCreditCost();
+            renderBillRows();
         };
 
         function switchMainTab(tab) {
@@ -314,68 +332,78 @@
             }
         }
 
-        function calculateCreditCost() {
-            const baseCost = parseFloat(document.getElementById('c_base_cost').value) || 0;
+        function renderBillRows() {
+            const container = document.getElementById('billItemsContainer');
+            container.innerHTML = "";
+            
+            billItems.forEach((item, index) => {
+                let row = `<tr class="hover:bg-slate-50">
+                    <td class="p-2">
+                        <input type="text" value="${item.name}" oninput="updateBillItem(${index}, 'name', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:bg-white" placeholder="ชื่อสินค้า">
+                    </td>
+                    <td class="p-2">
+                        <input type="number" value="${item.cost}" oninput="updateBillItem(${index}, 'cost', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none text-right font-bold focus:bg-white" placeholder="0.00">
+                    </td>
+                    <td class="p-2">
+                        <input type="number" value="${item.qty}" oninput="updateBillItem(${index}, 'qty', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none text-center font-bold focus:bg-white" placeholder="1">
+                    </td>
+                    <td class="p-2 text-center">
+                        <button onclick="removeBillRow(${index})" class="text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded">✕</button>
+                    </td>
+                </tr>`;
+                container.innerHTML += row;
+            });
+            calculateBillCredit();
+        }
+
+        function addBillRow() {
+            billItems.push({ name: "", cost: 0, qty: 1 });
+            renderBillRows();
+        }
+
+        function removeBillRow(index) {
+            billItems.splice(index, 1);
+            renderBillRows();
+        }
+
+        function updateBillItem(index, field, value) {
+            if (field === 'cost' || field === 'qty') {
+                billItems[index][field] = parseFloat(value) || 0;
+            } else {
+                billItems[index][field] = value;
+            }
+            calculateBillCredit();
+        }
+
+        function calculateBillCredit() {
             const cardFeePercent = parseFloat(document.getElementById('c_card_fee').value) || 0;
             const interestPerMonth = parseFloat(document.getElementById('c_interest_rate').value) || 0;
-            const selectedMonths = parseInt(document.getElementById('c_selected_months').value) || 6;
+            const selectedMonths = parseInt(document.getElementById('c_selected_months').value) || 0;
 
-            const tableBody = document.getElementById('c_table_body');
-            tableBody.innerHTML = "";
+            let totalBaseAmount = 0;
 
-            const plans = [
-                { months: 0, label: "รูดเต็ม" },
-                { months: 3, label: "3 เดือน" },
-                { months: 4, label: "4 เดือน" },
-                { months: 6, label: "6 เดือน" },
-                { months: 10, label: "10 เดือน" },
-                { months: 12, label: "12 เดือน" }
-            ];
-
-            let selectedTotalCost = 0;
-            let selectedMonthlyPay = 0;
-
-            plans.forEach(plan => {
-                let totalCost = baseCost;
-                let totalInterestPercent = 0;
-                let monthlyPay = 0;
-
-                if (plan.months === 0) {
-                    totalCost = baseCost * (1 + (cardFeePercent / 100));
-                    monthlyPay = totalCost;
-                } else {
-                    totalInterestPercent = interestPerMonth * plan.months;
-                    let interestAmount = baseCost * (totalInterestPercent / 100);
-                    let cardFeeAmount = baseCost * (cardFeePercent / 100);
-                    totalCost = baseCost + cardFeeAmount + interestAmount;
-                    monthlyPay = totalCost / plan.months;
-                }
-
-                let unitCost = totalCost;
-
-                if (plan.months === selectedMonths || (plan.months === 0 && selectedMonths === 0)) {
-                    selectedTotalCost = unitCost;
-                    selectedMonthlyPay = monthlyPay;
-                }
-
-                let isSelected = (plan.months === selectedMonths);
-                let rowClass = isSelected ? "bg-indigo-50/80 font-bold text-indigo-900" : "hover:bg-slate-50";
-
-                let row = `<tr class="${rowClass}">
-                    <td class="p-2.5">${plan.label} ${isSelected ? '⭐' : ''}</td>
-                    <td class="p-2.5 text-right">${totalCost.toFixed(2)}</td>
-                    <td class="p-2.5 text-right">${monthlyPay.toFixed(2)}</td>
-                    <td class="p-2.5 text-right font-bold text-indigo-600">${unitCost.toFixed(2)}</td>
-                </tr>`;
-                tableBody.innerHTML += row;
+            billItems.forEach(item => {
+                totalBaseAmount += (item.cost * item.qty);
             });
 
-            let selInterest = interestPerMonth * selectedMonths;
-            let selTotal = baseCost * (1 + (cardFeePercent/100)) + (baseCost * (selInterest/100));
-            let selMonthly = selTotal / selectedMonths;
+            let totalNetCost = totalBaseAmount;
+            let cardFeeAmount = totalBaseAmount * (cardFeePercent / 100);
 
-            document.getElementById('c_res_total_cost').innerText = selTotal.toFixed(2) + " บาท";
-            document.getElementById('c_res_monthly_pay').innerText = `ผ่อนเดือนละ ${selMonthly.toFixed(2)} บาท (${selectedMonths} งวด)`;
+            if (selectedMonths === 0) {
+                totalNetCost = totalBaseAmount + cardFeeAmount;
+                document.getElementById('monthlyPayContainer').style.display = 'none';
+            } else {
+                document.getElementById('monthlyPayContainer').style.display = 'flex';
+                let totalInterestPercent = interestPerMonth * selectedMonths;
+                let interestAmount = totalBaseAmount * (totalInterestPercent / 100);
+                totalNetCost = totalBaseAmount + cardFeeAmount + interestAmount;
+            }
+
+            let monthlyPay = selectedMonths > 0 ? (totalNetCost / selectedMonths) : 0;
+
+            document.getElementById('bill_total_base').innerText = totalBaseAmount.toFixed(2) + " บาท";
+            document.getElementById('bill_total_net').innerText = totalNetCost.toFixed(2) + " บาท";
+            document.getElementById('bill_monthly_pay').innerText = monthlyPay.toFixed(2) + " บาท (" + selectedMonths + " งวด)";
         }
 
         function calculateStore(source) {

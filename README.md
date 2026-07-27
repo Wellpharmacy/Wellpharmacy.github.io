@@ -2,22 +2,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการราคาและต้นทุน</title>
+    <title>ระบบจัดการราคาและต้นทุน - Well Pharmacy</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style> body { font-family: 'Sarabun', sans-serif; } </style>
+    <style> 
+        body { font-family: 'Sarabun', sans-serif; } 
+        @media print {
+            body * { visibility: hidden; }
+            #printableArea, #printableArea * { visibility: visible; }
+            #printableArea { position: absolute; left: 0; top: 0; width: 100%; }
+            .no-print { display: none; }
+        }
+    </style>
 </head>
 <body class="bg-slate-100 min-h-screen py-6 px-4 flex justify-center">
     
-    <!-- หน้าจอหลัก (ปรับให้เปิดในคอมแล้วสวยเป็นทรงการ์ดมือถือตรงกลาง หรือขยายตารางตามความกว้างได้) -->
     <div class="w-full max-w-4xl space-y-4">
         
         <!-- Header & Main Navigation Tabs -->
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto no-print">
             <div class="text-center space-y-1">
                 <h1 class="text-base font-bold text-slate-800 flex items-center justify-center gap-1.5">
                     <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    ระบบจัดการราคาและต้นทุน
+                    ระบบจัดการราคาและต้นทุน (Well Pharmacy)
                 </h1>
                 <p class="text-[11px] text-slate-500">คำนวณหน้าร้าน, ช่องทางออนไลน์ และวิเคราะห์ต้นทุนซื้อผ่านบัตรเครดิต/ผ่อนชำระ</p>
             </div>
@@ -97,9 +104,6 @@
                             <span class="text-slate-300">อัตรากำไรสุทธิ (%GP):</span>
                             <span id="res_store_gp" class="text-sm font-bold text-cyan-400">0.00%</span>
                         </div>
-                    </div>
-                    <div class="p-2 bg-slate-800 rounded-xl text-[11px] text-slate-300 text-center">
-                        💡 ราคานี้จะลิงก์ไปหน้าออนไลน์อัตโนมัติ
                     </div>
                 </div>
             </div>
@@ -190,77 +194,120 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (MULTI-ITEM ADVANCED BILL TABLE) ================= -->
+        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (WITH EXPORT & PRINT) ================= -->
         <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <h2 class="text-xs font-bold text-slate-800 border-b pb-3 uppercase tracking-wider">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ (หลายรายการ)</h2>
             
-            <!-- ตั้งค่าส่วนกลางของบิล -->
-            <div class="grid grid-cols-3 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
-                <div>
-                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูด (%)</label>
-                    <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="renderBillRows()">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
-                    <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="renderBillRows()">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ส่วนลดบิล (บริษัท)</label>
-                    <div class="flex">
-                        <input type="number" id="c_bill_disc" class="w-full px-2 py-2 bg-white border border-indigo-200 rounded-l-xl font-bold text-indigo-900 outline-none text-xs" value="0" placeholder="ส่วนลด" oninput="renderBillRows()">
-                        <select id="c_bill_disc_type" onchange="renderBillRows()" class="bg-indigo-100 border border-indigo-200 rounded-r-xl px-1.5 text-[11px] font-bold text-indigo-900 outline-none">
-                            <option value="baht">บาท</option>
-                            <option value="percent">%</option>
-                        </select>
+            <!-- พื้นที่สำหรับสั่งพิมพ์และ Export -->
+            <div id="printableArea" class="space-y-4">
+                
+                <div class="flex justify-between items-center border-b pb-3">
+                    <div>
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ</h2>
+                        <p class="text-[10px] text-slate-500">Well Pharmacy - บันทึกวิเคราะห์การสั่งซื้อและผ่อนชำระ</p>
+                    </div>
+                    <!-- ปุ่ม Export และ Print (ซ่อนเวลาสั่งพิมพ์จริง) -->
+                    <div class="flex gap-1.5 no-print">
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1">
+                            📥 Export CSV
+                        </button>
+                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1">
+                            🖨️ พิมพ์รายงาน
+                        </button>
                     </div>
                 </div>
+
+                <!-- ข้อมูลผู้จำหน่ายและเลขที่บิลเพิ่มเติม -->
+                <div class="grid grid-cols-2 gap-3 no-print bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">ชื่อผู้จำหน่าย / บริษัทเซลล์</label>
+                        <input type="text" id="c_supplier" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs outline-none font-semibold text-slate-800" placeholder="เช่น บริษัท ดีเคเอสเอช จำกัด">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">เลขที่ใบเสนอราคา / บิล</label>
+                        <input type="text" id="c_bill_no" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs outline-none font-semibold text-slate-800" placeholder="เช่น INV-2026-001">
+                    </div>
+                </div>
+
+                <!-- ตั้งค่าส่วนกลางของบิล -->
+                <div class="grid grid-cols-3 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
+                    <div>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูด (%)</label>
+                        <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="renderBillRows()">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
+                        <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="renderBillRows()">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ส่วนลดบิล (บริษัท)</label>
+                        <div class="flex">
+                            <input type="number" id="c_bill_disc" class="w-full px-2 py-2 bg-white border border-indigo-200 rounded-l-xl font-bold text-indigo-900 outline-none text-xs" value="0" placeholder="ส่วนลด" oninput="renderBillRows()">
+                            <select id="c_bill_disc_type" onchange="renderBillRows()" class="bg-indigo-100 border border-indigo-200 rounded-r-xl px-1.5 text-[11px] font-bold text-indigo-900 outline-none">
+                                <option value="baht">บาท</option>
+                                <option value="percent">%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ตารางรายการสินค้าแบบกว้าง -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-700">ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
+                        <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700 no-print">+ เพิ่มรายการยา/สินค้า</button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                        <table class="w-full text-left text-xs whitespace-nowrap">
+                            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-2.5">ชื่อสินค้า / ยา</th>
+                                    <th class="p-2.5 text-center w-16">จำนวน</th>
+                                    <th class="p-2.5 text-right w-24">ทุนตั้งต้น (รวม)</th>
+                                    <th class="p-2.5 text-right w-24 text-indigo-600">รวมค่ารูดบัตร</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 3 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 4 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 6 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 8 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 9 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 10 ด.</th>
+                                    <th class="p-2.5 text-right w-24">ผ่อน 12 ด.</th>
+                                    <th class="p-2.5 text-center w-10 no-print">ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billItemsContainer" class="divide-y divide-slate-100 font-medium text-slate-800">
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- สรุปยอดรวมทั้งบิล -->
+                <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner">
+                    <div class="flex justify-between items-center text-xs border-b border-indigo-800 pb-2">
+                        <span class="text-indigo-200 font-bold">สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
+                        <span id="bill_total_net" class="font-extrabold text-amber-400 text-sm">0.00 บาท</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 text-[11px] text-indigo-200">
+                        <div>ทุนตั้งต้นรวม: <span id="bill_total_base" class="text-white font-bold">0.00</span></div>
+                        <div>หลังหักส่วนลด: <span id="bill_total_after_disc" class="text-white font-bold">0.00</span></div>
+                        <div>ค่าธรรมเนียมรูด: <span id="bill_total_fee_amt" class="text-white font-bold">0.00</span></div>
+                        <div>สถานะส่วนลด: <span id="bill_disc_status" class="text-emerald-300 font-bold">ไม่มีส่วนลด</span></div>
+                    </div>
+                </div>
+
+                <!-- ส่วนสรุปผลการผ่อนชำระแยกตามจำนวนเดือน -->
+                <div class="p-4 bg-slate-900 text-white rounded-2xl space-y-3 border border-slate-800 shadow-sm">
+                    <div class="text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5 border-b border-slate-800 pb-2">
+                        <span>📊 สรุปยอดรวมและค่างวดรายเดือน สำหรับการตัดสินใจผ่อนชำระ</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs" id="installmentSummaryGrid">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
             </div>
 
-            <!-- ตารางรายการสินค้าแบบกว้าง (เลื่อนซ้ายขวาได้) -->
-            <div class="space-y-2">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-slate-700">ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
-                    <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700">+ เพิ่มรายการยา/สินค้า</button>
-                </div>
-
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                    <table class="w-full text-left text-xs whitespace-nowrap">
-                        <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                            <tr>
-                                <th class="p-2.5">ชื่อสินค้า / ยา</th>
-                                <th class="p-2.5 text-center w-16">จำนวน</th>
-                                <th class="p-2.5 text-right w-24">ทุนตั้งต้น (รวม)</th>
-                                <th class="p-2.5 text-right w-24 text-indigo-600">รวมค่ารูดบัตร</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 3 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 4 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 6 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 8 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 9 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 10 ด.</th>
-                                <th class="p-2.5 text-right w-24">ผ่อน 12 ด.</th>
-                                <th class="p-2.5 text-center w-10">ลบ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="billItemsContainer" class="divide-y divide-slate-100 font-medium text-slate-800">
-                            <!-- Rows injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- สรุปยอดรวมทั้งบิล -->
-            <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner">
-                <div class="flex justify-between items-center text-xs border-b border-indigo-800 pb-2">
-                    <span class="text-indigo-200 font-bold">สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
-                    <span id="bill_total_net" class="font-extrabold text-amber-400 text-sm">0.00 บาท</span>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 text-[11px] text-indigo-200">
-                    <div>ทุนตั้งต้นรวม: <span id="bill_total_base" class="text-white font-bold">0.00</span></div>
-                    <div>หลังหักส่วนลด: <span id="bill_total_after_disc" class="text-white font-bold">0.00</span></div>
-                    <div>ค่าธรรมเนียมรูด: <span id="bill_total_fee_amt" class="text-white font-bold">0.00</span></div>
-                    <div>สถานะส่วนลด: <span id="bill_disc_status" class="text-emerald-300 font-bold">ไม่มีส่วนลด</span></div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -269,7 +316,6 @@
         let currentStoreNetPrice = 0;
         let currentStoreCost = 0;
 
-        // ข้อมูลตัวอย่างเริ่มต้นในบิล
         let billItems = [
             { name: "Amoxycillin 500mg", cost: 600, qty: 10 },
             { name: "Paracetamol 500mg", cost: 250, qty: 20 }
@@ -358,6 +404,10 @@
             let grandTotalNet = 0;
             let grandTotalFee = 0;
 
+            let summaryMonths = [3, 4, 6, 8, 9, 10, 12];
+            let installmentTotals = {};
+            summaryMonths.forEach(m => installmentTotals[m] = 0);
+
             billItems.forEach((item, index) => {
                 let itemBaseTotal = item.cost * item.qty;
                 let itemNetBase = itemBaseTotal * discountRatio;
@@ -367,11 +417,12 @@
                 grandTotalNet += itemTotalWithFee;
                 grandTotalFee += itemCardFee;
 
-                // คำนวณราคาผ่อนแต่ละเดือนสำหรับสินค้านี้
                 let getInstallment = (m) => {
                     let totalInterestPercent = interestPerMonth * m;
                     let interestAmt = itemNetBase * (totalInterestPercent / 100);
-                    return (itemNetBase + itemCardFee + interestAmt).toFixed(2);
+                    let totalWithInterest = itemNetBase + itemCardFee + interestAmt;
+                    installmentTotals[m] += totalWithInterest;
+                    return totalWithInterest.toFixed(2);
                 };
 
                 let row = `<tr class="hover:bg-slate-50">
@@ -392,7 +443,7 @@
                     <td class="p-2 text-right text-slate-700">${getInstallment(9)}</td>
                     <td class="p-2 text-right text-slate-700">${getInstallment(10)}</td>
                     <td class="p-2 text-right text-slate-700">${getInstallment(12)}</td>
-                    <td class="p-2 text-center">
+                    <td class="p-2 text-center no-print">
                         <button onclick="removeBillRow(${index})" class="text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded">✕</button>
                     </td>
                 </tr>`;
@@ -404,6 +455,23 @@
             document.getElementById('bill_total_fee_amt').innerText = grandTotalFee.toFixed(2) + " บาท";
             document.getElementById('bill_total_net').innerText = grandTotalNet.toFixed(2) + " บาท";
             document.getElementById('bill_disc_status').innerText = billDiscVal > 0 ? `ลด ${billDiscVal} ${billDiscType === 'percent' ? '%' : 'บาท'}` : "ไม่มีส่วนลด";
+
+            const sumGrid = document.getElementById('installmentSummaryGrid');
+            sumGrid.innerHTML = "";
+            summaryMonths.forEach(m => {
+                let totalAmt = installmentTotals[m];
+                let perMonthAmt = totalAmt / m;
+                sumGrid.innerHTML += `
+                    <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-1">
+                        <div class="text-slate-400 font-bold">ผ่อน ${m} เดือน</div>
+                        <div class="text-white font-bold text-sm">${perMonthAmt.toFixed(2)} <span class="text-[10px] text-slate-400">บาท/เดือน</span></div>
+                        <div class="text-[10px] text-indigo-300 pt-1 border-t border-slate-700 flex justify-between">
+                            <span>รวมทั้งหมด:</span>
+                            <span class="font-semibold">${totalAmt.toFixed(2)} ฿</span>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
         function addBillRow() {
@@ -423,6 +491,47 @@
                 billItems[index][field] = value;
             }
             renderBillRows();
+        }
+
+        // ฟังก์ชัน Export ข้อมูลเป็น CSV เพื่อเปิดใน Excel
+        function exportToCSV() {
+            let supplier = document.getElementById('c_supplier').value || "ไม่ระบุผู้จำหน่าย";
+            let billNo = document.getElementById('c_bill_no').value || "ไม่ระบุเลขบิล";
+            
+            let csvContent = "\uFEFF"; // BOM สำหรับรองรับภาษาไทยใน Excel
+            csvContent += `ผู้จำหน่าย: ${supplier}, เลขที่บิล: ${billNo}\n`;
+            csvContent += "ชื่อสินค้า,จำนวน,ราคาทุนรวม,ราคารวมค่ารูดบัตร,ผ่อน 3 ด.,ผ่อน 4 ด.,ผ่อน 6 ด.,ผ่อน 8 ด.,ผ่อน 9 ด.,ผ่อน 10 ด.,ผ่อน 12 ด.\n";
+
+            const cardFeePercent = parseFloat(document.getElementById('c_card_fee').value) || 0;
+            const interestPerMonth = parseFloat(document.getElementById('c_interest_rate').value) || 0;
+            const billDiscVal = parseFloat(document.getElementById('c_bill_disc').value) || 0;
+            const billDiscType = document.getElementById('c_bill_disc_type').value;
+
+            let totalBaseAmount = 0;
+            billItems.forEach(item => totalBaseAmount += (item.cost * item.qty));
+            let totalDiscountAmount = (billDiscVal > 0) ? (billDiscType === 'percent' ? totalBaseAmount * (billDiscVal / 100) : billDiscVal) : 0;
+            let netBaseAfterDisc = Math.max(0, totalBaseAmount - totalDiscountAmount);
+            let discountRatio = totalBaseAmount > 0 ? (netBaseAfterDisc / totalBaseAmount) : 1;
+
+            billItems.forEach(item => {
+                let itemBaseTotal = item.cost * item.qty;
+                let itemNetBase = itemBaseTotal * discountRatio;
+                let itemCardFee = itemNetBase * (cardFeePercent / 100);
+                let itemTotalWithFee = itemNetBase + itemCardFee;
+
+                let getInst = (m) => (itemNetBase + itemCardFee + (itemNetBase * (interestPerMonth * m) / 100)).toFixed(2);
+
+                let rowString = `"${item.name}",${item.qty},${itemBaseTotal.toFixed(2)},${itemTotalWithFee.toFixed(2)},${getInst(3)},${getInst(4)},${getInst(6)},${getInst(8)},${getInst(9)},${getInst(10)},${getInst(12)}`;
+                csvContent += rowString + "\n";
+            });
+
+            let encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `credit_analysis_${billNo}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function calculateStore(source) {

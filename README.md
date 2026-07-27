@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -134,6 +133,3 @@ function toggleMode(mode) {
 }
 function onChannelChange() {}
 function calculateSingle() {}
-</script>
-</body>
-</html>

@@ -194,29 +194,21 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (WITH EXPORT & PRINT) ================= -->
+        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT ================= -->
         <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-md border border-slate-200 space-y-4">
             
-            <!-- พื้นที่สำหรับสั่งพิมพ์และ Export -->
             <div id="printableArea" class="space-y-4">
-                
                 <div class="flex justify-between items-center border-b pb-3">
                     <div>
                         <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ</h2>
                         <p class="text-[10px] text-slate-500">✨ บันทึกวิเคราะห์การสั่งซื้อและผ่อนชำระสินค้า 📊</p>
                     </div>
-                    <!-- ปุ่ม Export และ Print (ซ่อนเวลาสั่งพิมพ์จริง) -->
                     <div class="flex gap-1.5 no-print">
-                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">
-                            📥 Export CSV
-                        </button>
-                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">
-                            🖨️ พิมพ์รายงาน
-                        </button>
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">📥 Export CSV</button>
+                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">🖨️ พิมพ์รายงาน</button>
                     </div>
                 </div>
 
-                <!-- ข้อมูลผู้จำหน่ายและเลขที่บิลเพิ่มเติม -->
                 <div class="grid grid-cols-2 gap-3 no-print bg-slate-50 p-3 rounded-2xl border border-slate-200">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-700 mb-1">🏢 ชื่อผู้จำหน่าย / บริษัทเซลล์</label>
@@ -228,7 +220,6 @@
                     </div>
                 </div>
 
-                <!-- ตั้งค่าส่วนกลางของบิล -->
                 <div class="grid grid-cols-3 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
                     <div>
                         <label class="block text-[11px] font-bold text-indigo-900 mb-1">💳 ค่าธรรมเนียมรูด (%)</label>
@@ -250,7 +241,6 @@
                     </div>
                 </div>
 
-                <!-- ตารางรายการสินค้าแบบกว้าง -->
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
                         <span class="text-xs font-bold text-slate-700 flex items-center gap-1">📋 ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
@@ -275,14 +265,11 @@
                                     <th class="p-2.5 text-center w-10 no-print">ลบ</th>
                                 </tr>
                             </thead>
-                            <tbody id="billItemsContainer" class="divide-y divide-slate-100 font-medium text-slate-800">
-                                <!-- Rows injected by JS -->
-                            </tbody>
+                            <tbody id="billItemsContainer" class="divide-y divide-slate-100 font-medium text-slate-800"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- สรุปยอดรวมทั้งบิล -->
                 <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner border border-indigo-800">
                     <div class="flex justify-between items-center text-xs border-b border-indigo-800 pb-2">
                         <span class="text-indigo-200 font-bold">✨ สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
@@ -296,16 +283,12 @@
                     </div>
                 </div>
 
-                <!-- ส่วนสรุปผลการผ่อนชำระแยกตามจำนวนเดือน -->
                 <div class="p-4 bg-slate-900 text-white rounded-2xl space-y-3 border border-slate-800 shadow-sm">
                     <div class="text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5 border-b border-slate-800 pb-2">
                         <span>📊 สรุปยอดรวมและค่างวดรายเดือน สำหรับการตัดสินใจผ่อนชำระ</span>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs" id="installmentSummaryGrid">
-                        <!-- Injected by JS -->
-                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs" id="installmentSummaryGrid"></div>
                 </div>
-
             </div>
 
         </div>
@@ -350,8 +333,10 @@
                 pageOnline.classList.remove('hidden');
                 btnMainOnline.className = "py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1";
                 
+                // อัปเดตราคาทุนและราคาอ้างอิงอัตโนมัติจากหน้าหน้าร้านทันทีที่กดเปลี่ยนแท็บ
+                calculateStore();
                 document.getElementById('refStorePriceDisplay').innerText = currentStoreNetPrice.toFixed(2) + " บาท";
-                if(!document.getElementById('manual_ref_price').value && currentStoreNetPrice > 0) {
+                if(currentStoreNetPrice > 0) {
                     document.getElementById('manual_ref_price').value = currentStoreNetPrice.toFixed(2);
                 }
                 calculateOnlineChannels();
@@ -600,6 +585,10 @@
         }
 
         function calculateOnlineChannels() {
+            // ดึงค่าทุนล่าสุดจากตัวแปรกลางที่ผูกกับช่องราคาทุนหน้าแรกเสมอ
+            const costInput = parseFloat(document.getElementById('s_cost').value) || 0;
+            currentStoreCost = costInput;
+
             let baseRef = parseFloat(document.getElementById('manual_ref_price').value) || currentStoreNetPrice;
             let onlineDiscVal = parseFloat(document.getElementById('online_disc').value) || 0;
             let onlineDiscType = document.getElementById('online_disc_type').value;
@@ -621,7 +610,7 @@
             document.getElementById('lm_dec_price').innerText = lmDecPrice.toFixed(2) + " บาท";
             document.getElementById('lm_dec_gp_amt').innerText = "-" + (lmRoundPrice * 0.321).toFixed(2) + " บาท";
             document.getElementById('lm_round_price').innerText = lmRoundPrice.toLocaleString() + " บาท";
-            document.getElementById('lm_round_profit').innerText = (currentStoreCost > 0 ? lmProfit.toFixed(2) + " บาท" : "กรุณากรอกราคาทุน");
+            document.getElementById('lm_round_profit').innerText = (currentStoreCost > 0 ? lmProfit.toFixed(2) + " บาท" : "กรุณากรอกราคาทุนที่หน้าแรก");
 
             let teleRawPrice = baseRef * 1.48;
             let teleDecPrice = applyDiscount(teleRawPrice);
@@ -632,7 +621,7 @@
             document.getElementById('tele_dec_price').innerText = teleDecPrice.toFixed(2) + " บาท";
             document.getElementById('tele_dec_gp_amt').innerText = "-" + (teleRoundPrice * 0.3745).toFixed(2) + " บาท";
             document.getElementById('tele_round_price').innerText = teleRoundPrice.toLocaleString() + " บาท";
-            document.getElementById('tele_round_profit').innerText = (currentStoreCost > 0 ? teleProfit.toFixed(2) + " บาท" : "กรุณากรอกราคาทุน");
+            document.getElementById('tele_round_profit').innerText = (currentStoreCost > 0 ? teleProfit.toFixed(2) + " บาท" : "กรุณากรอกราคาทุนที่หน้าแรก");
         }
     </script>
 </body>

@@ -9,11 +9,11 @@
 </head>
 <body class="bg-slate-100 min-h-screen py-6 px-4 flex justify-center">
     
-    <!-- บีบความกว้างไม่ให้ยืดกว้างเกินไปบนจอคอม ให้แสดงผลเป็นทรงมือถือสวยๆ ตรงกลาง -->
-    <div class="w-full max-w-md space-y-4">
+    <!-- หน้าจอหลัก (ปรับให้เปิดในคอมแล้วสวยเป็นทรงการ์ดมือถือตรงกลาง หรือขยายตารางตามความกว้างได้) -->
+    <div class="w-full max-w-4xl space-y-4">
         
         <!-- Header & Main Navigation Tabs -->
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
             <div class="text-center space-y-1">
                 <h1 class="text-base font-bold text-slate-800 flex items-center justify-center gap-1.5">
                     <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
@@ -29,7 +29,7 @@
         </div>
 
         <!-- ================= PAGE 1: STORE CALCULATOR ================= -->
-        <div id="pageStore" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+        <div id="pageStore" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
             <h2 class="text-xs font-bold text-slate-800 border-b pb-3 flex items-center gap-1.5 uppercase tracking-wider">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 คำนวณราคายา/สินค้า และ %GP หน้าร้าน
@@ -106,7 +106,7 @@
         </div>
 
         <!-- ================= PAGE 2: ONLINE CHANNELS ================= -->
-        <div id="pageOnline" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+        <div id="pageOnline" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
             <div class="flex flex-col gap-2 border-b pb-3">
                 <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">🛵 ระบบคำนวณราคาช่องทางออนไลน์</h2>
                 <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl">
@@ -190,36 +190,54 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (MULTI-ITEM BILL) ================= -->
+        <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (MULTI-ITEM ADVANCED BILL TABLE) ================= -->
         <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <h2 class="text-xs font-bold text-slate-800 border-b pb-3 uppercase tracking-wider">💳 คำนวณต้นทุนบิลสินค้าหลายรายการ (บัตรเครดิต/ผ่อน)</h2>
+            <h2 class="text-xs font-bold text-slate-800 border-b pb-3 uppercase tracking-wider">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ (หลายรายการ)</h2>
             
             <!-- ตั้งค่าส่วนกลางของบิล -->
-            <div class="grid grid-cols-2 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
+            <div class="grid grid-cols-3 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
                 <div>
-                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูดรวม (%)</label>
-                    <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="calculateBillCredit()">
+                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูด (%)</label>
+                    <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="renderBillRows()">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-indigo-900 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
-                    <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="calculateBillCredit()">
+                    <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="renderBillRows()">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-indigo-900 mb-1">ส่วนลดบิล (บริษัท)</label>
+                    <div class="flex">
+                        <input type="number" id="c_bill_disc" class="w-full px-2 py-2 bg-white border border-indigo-200 rounded-l-xl font-bold text-indigo-900 outline-none text-xs" value="0" placeholder="ส่วนลด" oninput="renderBillRows()">
+                        <select id="c_bill_disc_type" onchange="renderBillRows()" class="bg-indigo-100 border border-indigo-200 rounded-r-xl px-1.5 text-[11px] font-bold text-indigo-900 outline-none">
+                            <option value="baht">บาท</option>
+                            <option value="percent">%</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- ตารางรายการสินค้าในบิล -->
+            <!-- ตารางรายการสินค้าแบบกว้าง (เลื่อนซ้ายขวาได้) -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-slate-700">รายการสินค้าในบิล</span>
-                    <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700">+ เพิ่มรายการ</button>
+                    <span class="text-xs font-bold text-slate-700">ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
+                    <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700">+ เพิ่มรายการยา/สินค้า</button>
                 </div>
 
                 <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                    <table class="w-full text-left text-xs">
+                    <table class="w-full text-left text-xs whitespace-nowrap">
                         <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
                             <tr>
                                 <th class="p-2.5">ชื่อสินค้า / ยา</th>
-                                <th class="p-2.5 text-right w-24">ทุนตั้งต้น</th>
-                                <th class="p-2.5 text-right w-16">จำนวน</th>
+                                <th class="p-2.5 text-center w-16">จำนวน</th>
+                                <th class="p-2.5 text-right w-24">ทุนตั้งต้น (รวม)</th>
+                                <th class="p-2.5 text-right w-24 text-indigo-600">รวมค่ารูดบัตร</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 3 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 4 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 6 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 8 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 9 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 10 ด.</th>
+                                <th class="p-2.5 text-right w-24">ผ่อน 12 ด.</th>
                                 <th class="p-2.5 text-center w-10">ลบ</th>
                             </tr>
                         </thead>
@@ -230,33 +248,17 @@
                 </div>
             </div>
 
-            <!-- เลือกจำนวนงวดผ่อน -->
-            <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-3 shadow-inner">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-indigo-200">ระยะเวลาผ่อนชำระ:</span>
-                    <select id="c_selected_months" onchange="calculateBillCredit()" class="px-3 py-1.5 bg-indigo-800 border border-indigo-700 rounded-xl text-xs font-bold text-white outline-none">
-                        <option value="0">รูดเต็มจำนวน (ไม่ผ่อน)</option>
-                        <option value="3">3 เดือน</option>
-                        <option value="4">4 เดือน</option>
-                        <option value="6" selected>6 เดือน</option>
-                        <option value="10">10 เดือน</option>
-                        <option value="12">12 เดือน</option>
-                    </select>
+            <!-- สรุปยอดรวมทั้งบิล -->
+            <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner">
+                <div class="flex justify-between items-center text-xs border-b border-indigo-800 pb-2">
+                    <span class="text-indigo-200 font-bold">สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
+                    <span id="bill_total_net" class="font-extrabold text-amber-400 text-sm">0.00 บาท</span>
                 </div>
-                
-                <div class="pt-2 border-t border-indigo-800 space-y-1.5 text-xs">
-                    <div class="flex justify-between">
-                        <span class="text-indigo-300">ยอดรวมทุนตั้งต้นทั้งบิล:</span>
-                        <span id="bill_total_base" class="font-bold text-white">0.00 บาท</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-indigo-300">ยอดชำระสุทธิ (รวมค่าธรรมเนียม/ดอกเบี้ย):</span>
-                        <span id="bill_total_net" class="font-bold text-amber-400 text-sm">0.00 บาท</span>
-                    </div>
-                    <div class="flex justify-between" id="monthlyPayContainer">
-                        <span class="text-indigo-300">ยอดผ่อนชำระต่อเดือน:</span>
-                        <span id="bill_monthly_pay" class="font-bold text-cyan-300">0.00 บาท</span>
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 text-[11px] text-indigo-200">
+                    <div>ทุนตั้งต้นรวม: <span id="bill_total_base" class="text-white font-bold">0.00</span></div>
+                    <div>หลังหักส่วนลด: <span id="bill_total_after_disc" class="text-white font-bold">0.00</span></div>
+                    <div>ค่าธรรมเนียมรูด: <span id="bill_total_fee_amt" class="text-white font-bold">0.00</span></div>
+                    <div>สถานะส่วนลด: <span id="bill_disc_status" class="text-emerald-300 font-bold">ไม่มีส่วนลด</span></div>
                 </div>
             </div>
         </div>
@@ -269,8 +271,8 @@
 
         // ข้อมูลตัวอย่างเริ่มต้นในบิล
         let billItems = [
-            { name: "Amoxycillin 500mg", cost: 60, qty: 10 },
-            { name: "Paracetamol 500mg", cost: 25, qty: 50 }
+            { name: "Amoxycillin 500mg", cost: 600, qty: 10 },
+            { name: "Paracetamol 500mg", cost: 250, qty: 20 }
         ];
 
         window.onload = function() { 
@@ -336,24 +338,72 @@
             const container = document.getElementById('billItemsContainer');
             container.innerHTML = "";
             
+            const cardFeePercent = parseFloat(document.getElementById('c_card_fee').value) || 0;
+            const interestPerMonth = parseFloat(document.getElementById('c_interest_rate').value) || 0;
+            const billDiscVal = parseFloat(document.getElementById('c_bill_disc').value) || 0;
+            const billDiscType = document.getElementById('c_bill_disc_type').value;
+
+            let totalBaseAmount = 0;
+            billItems.forEach(item => {
+                totalBaseAmount += (item.cost * item.qty);
+            });
+
+            let totalDiscountAmount = 0;
+            if (billDiscVal > 0) {
+                totalDiscountAmount = (billDiscType === 'percent') ? totalBaseAmount * (billDiscVal / 100) : billDiscVal;
+            }
+            let netBaseAfterDisc = Math.max(0, totalBaseAmount - totalDiscountAmount);
+            let discountRatio = totalBaseAmount > 0 ? (netBaseAfterDisc / totalBaseAmount) : 1;
+
+            let grandTotalNet = 0;
+            let grandTotalFee = 0;
+
             billItems.forEach((item, index) => {
+                let itemBaseTotal = item.cost * item.qty;
+                let itemNetBase = itemBaseTotal * discountRatio;
+                let itemCardFee = itemNetBase * (cardFeePercent / 100);
+                let itemTotalWithFee = itemNetBase + itemCardFee;
+
+                grandTotalNet += itemTotalWithFee;
+                grandTotalFee += itemCardFee;
+
+                // คำนวณราคาผ่อนแต่ละเดือนสำหรับสินค้านี้
+                let getInstallment = (m) => {
+                    let totalInterestPercent = interestPerMonth * m;
+                    let interestAmt = itemNetBase * (totalInterestPercent / 100);
+                    return (itemNetBase + itemCardFee + interestAmt).toFixed(2);
+                };
+
                 let row = `<tr class="hover:bg-slate-50">
                     <td class="p-2">
-                        <input type="text" value="${item.name}" oninput="updateBillItem(${index}, 'name', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:bg-white" placeholder="ชื่อสินค้า">
-                    </td>
-                    <td class="p-2">
-                        <input type="number" value="${item.cost}" oninput="updateBillItem(${index}, 'cost', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none text-right font-bold focus:bg-white" placeholder="0.00">
+                        <input type="text" value="${item.name}" oninput="updateBillItem(${index}, 'name', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:bg-white" placeholder="ชื่อยา/สินค้า">
                     </td>
                     <td class="p-2">
                         <input type="number" value="${item.qty}" oninput="updateBillItem(${index}, 'qty', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none text-center font-bold focus:bg-white" placeholder="1">
                     </td>
+                    <td class="p-2">
+                        <input type="number" value="${item.cost}" oninput="updateBillItem(${index}, 'cost', this.value)" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none text-right font-bold focus:bg-white" placeholder="0.00">
+                    </td>
+                    <td class="p-2 text-right font-bold text-indigo-600">${itemTotalWithFee.toFixed(2)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(3)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(4)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(6)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(8)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(9)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(10)}</td>
+                    <td class="p-2 text-right text-slate-700">${getInstallment(12)}</td>
                     <td class="p-2 text-center">
                         <button onclick="removeBillRow(${index})" class="text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded">✕</button>
                     </td>
                 </tr>`;
                 container.innerHTML += row;
             });
-            calculateBillCredit();
+
+            document.getElementById('bill_total_base').innerText = totalBaseAmount.toFixed(2) + " บาท";
+            document.getElementById('bill_total_after_disc').innerText = netBaseAfterDisc.toFixed(2) + " บาท";
+            document.getElementById('bill_total_fee_amt').innerText = grandTotalFee.toFixed(2) + " บาท";
+            document.getElementById('bill_total_net').innerText = grandTotalNet.toFixed(2) + " บาท";
+            document.getElementById('bill_disc_status').innerText = billDiscVal > 0 ? `ลด ${billDiscVal} ${billDiscType === 'percent' ? '%' : 'บาท'}` : "ไม่มีส่วนลด";
         }
 
         function addBillRow() {
@@ -372,38 +422,7 @@
             } else {
                 billItems[index][field] = value;
             }
-            calculateBillCredit();
-        }
-
-        function calculateBillCredit() {
-            const cardFeePercent = parseFloat(document.getElementById('c_card_fee').value) || 0;
-            const interestPerMonth = parseFloat(document.getElementById('c_interest_rate').value) || 0;
-            const selectedMonths = parseInt(document.getElementById('c_selected_months').value) || 0;
-
-            let totalBaseAmount = 0;
-
-            billItems.forEach(item => {
-                totalBaseAmount += (item.cost * item.qty);
-            });
-
-            let totalNetCost = totalBaseAmount;
-            let cardFeeAmount = totalBaseAmount * (cardFeePercent / 100);
-
-            if (selectedMonths === 0) {
-                totalNetCost = totalBaseAmount + cardFeeAmount;
-                document.getElementById('monthlyPayContainer').style.display = 'none';
-            } else {
-                document.getElementById('monthlyPayContainer').style.display = 'flex';
-                let totalInterestPercent = interestPerMonth * selectedMonths;
-                let interestAmount = totalBaseAmount * (totalInterestPercent / 100);
-                totalNetCost = totalBaseAmount + cardFeeAmount + interestAmount;
-            }
-
-            let monthlyPay = selectedMonths > 0 ? (totalNetCost / selectedMonths) : 0;
-
-            document.getElementById('bill_total_base').innerText = totalBaseAmount.toFixed(2) + " บาท";
-            document.getElementById('bill_total_net').innerText = totalNetCost.toFixed(2) + " บาท";
-            document.getElementById('bill_monthly_pay').innerText = monthlyPay.toFixed(2) + " บาท (" + selectedMonths + " งวด)";
+            renderBillRows();
         }
 
         function calculateStore(source) {

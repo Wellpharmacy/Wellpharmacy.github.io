@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -106,6 +107,33 @@
       </div>
     </div>
   </div>
+
+  <div id="multiSection" class="card space-y-6 hidden">
+    <h2 class="section-title">📊 ตารางคำนวณหลายรายการพร้อมกัน</h2>
+    <p class="subtitle">ฟังก์ชันตารางหลายรายการพร้อมใช้งาน</p>
+  </div>
 </div>
+
+<script>
+function toggleMode(mode) {
+  const singleSec = document.getElementById('singleSection');
+  const multiSec = document.getElementById('multiSection');
+  const btnSingle = document.getElementById('btnSingle');
+  const btnMulti = document.getElementById('btnMulti');
+  if (mode === 'single') {
+    singleSec.classList.remove('hidden');
+    multiSec.classList.add('hidden');
+    btnSingle.className = 'btn btn-primary';
+    btnMulti.className = 'btn btn-secondary';
+  } else {
+    singleSec.classList.add('hidden');
+    multiSec.classList.remove('hidden');
+    btnMulti.className = 'btn btn-primary';
+    btnSingle.className = 'btn btn-secondary';
+  }
+}
+function onChannelChange() {}
+function calculateSingle() {}
+</script>
 </body>
 </html>

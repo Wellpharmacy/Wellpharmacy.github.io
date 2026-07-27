@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการราคาและต้นทุน - Well Pharmacy</title>
+    <title>ระบบจัดการราคาและต้นทุน</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style> 
@@ -15,53 +15,53 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen py-6 px-4 flex justify-center">
+<body class="bg-gradient-to-br from-slate-100 to-emerald-50 min-h-screen py-6 px-4 flex justify-center">
     
     <div class="w-full max-w-4xl space-y-4">
         
         <!-- Header & Main Navigation Tabs -->
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto no-print">
+        <div class="bg-white p-5 rounded-3xl shadow-md border border-slate-200 space-y-4 max-w-md mx-auto no-print">
             <div class="text-center space-y-1">
                 <h1 class="text-base font-bold text-slate-800 flex items-center justify-center gap-1.5">
-                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    ระบบจัดการราคาและต้นทุน (Well Pharmacy)
+                    <span class="text-xl">💊</span>
+                    ระบบจัดการราคาและต้นทุน
                 </h1>
-                <p class="text-[11px] text-slate-500">คำนวณหน้าร้าน, ช่องทางออนไลน์ และวิเคราะห์ต้นทุนซื้อผ่านบัตรเครดิต/ผ่อนชำระ</p>
+                <p class="text-[11px] text-slate-500">✨ คำนวณหน้าร้าน, ช่องทางออนไลน์ และวิเคราะห์ต้นทุนซื้อผ่านบัตรเครดิต/ผ่อนชำระ 🚀</p>
             </div>
             <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1.5 rounded-2xl">
-                <button onclick="switchMainTab('store')" id="btnMainStore" class="py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm">🏪 หน้าร้าน</button>
-                <button onclick="switchMainTab('online')" id="btnMainOnline" class="py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200">🛵 ออนไลน์</button>
-                <button onclick="switchMainTab('credit')" id="btnMainCredit" class="py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200">💳 วิเคราะห์บัตร</button>
+                <button onclick="switchMainTab('store')" id="btnMainStore" class="py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1">🏪 หน้าร้าน</button>
+                <button onclick="switchMainTab('online')" id="btnMainOnline" class="py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200 flex items-center justify-center gap-1">🛵 ออนไลน์</button>
+                <button onclick="switchMainTab('credit')" id="btnMainCredit" class="py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200 flex items-center justify-center gap-1">💳 วิเคราะห์บัตร</button>
             </div>
         </div>
 
         <!-- ================= PAGE 1: STORE CALCULATOR ================= -->
-        <div id="pageStore" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
+        <div id="pageStore" class="bg-white p-6 rounded-3xl shadow-md border border-slate-200 space-y-4 max-w-md mx-auto">
             <h2 class="text-xs font-bold text-slate-800 border-b pb-3 flex items-center gap-1.5 uppercase tracking-wider">
-                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <span class="text-base">🏷️</span>
                 คำนวณราคายา/สินค้า และ %GP หน้าร้าน
             </h2>
             
             <div class="space-y-3.5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">ราคาทุนตั้งต้น (บาท)</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">💰 ราคาทุนตั้งต้น (บาท)</label>
                     <input type="number" id="s_cost" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none font-semibold text-slate-800 text-sm" placeholder="0.00" oninput="calculateStore()">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">ราคาขาย / ราคาป้าย</label>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">🏷️ ราคาขาย / ราคาป้าย</label>
                         <input type="number" id="s_price" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none font-semibold text-slate-800 text-sm" placeholder="0.00" oninput="calculateStore('price')">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">เป้าหมาย %GP หน้าร้าน</label>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">🎯 เป้าหมาย %GP หน้าร้าน</label>
                         <input type="number" id="s_gp" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none font-semibold text-slate-800 text-sm" placeholder="0.00" oninput="calculateStore('gp')">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">ส่วนลดหน้าร้าน / คูปอง</label>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">🎟️ ส่วนลดหน้าร้าน / คูปอง</label>
                         <div class="flex">
                             <input type="number" id="s_disc" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-l-xl focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-slate-800 text-sm" placeholder="0" oninput="calculateStore()">
                             <select id="s_disc_type" onchange="calculateStore()" class="bg-slate-200 border border-slate-200 rounded-r-xl px-2 text-xs font-bold text-slate-700 outline-none">
@@ -71,13 +71,13 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">ค่าธรรมเนียมรับชำระ (%)</label>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">💸 ค่าธรรมเนียมรับชำระ (%)</label>
                         <input type="number" id="s_fee" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-semibold text-slate-800 text-sm" placeholder="0.00" value="0" oninput="calculateStore()">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">ภาษีมูลค่าเพิ่ม (VAT 7%)</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">🧾 ภาษีมูลค่าเพิ่ม (VAT 7%)</label>
                     <select id="s_vat_type" onchange="calculateStore()" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none">
                         <option value="none">ไม่คิด VAT (ยกเว้น)</option>
                         <option value="exclude">ยังไม่รวม VAT (บวกเพิ่ม 7%)</option>
@@ -86,22 +86,22 @@
                 </div>
 
                 <!-- Results Box -->
-                <div class="bg-slate-900 text-white p-5 rounded-2xl space-y-3.5 shadow-inner mt-2">
+                <div class="bg-slate-900 text-white p-5 rounded-2xl space-y-3.5 shadow-inner mt-2 border border-slate-800">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                        <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">ผลการคำนวณหน้าร้าน</h3>
-                        <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] rounded-full font-bold">Retail Store</span>
+                        <h3 class="text-slate-300 text-xs font-bold uppercase tracking-wider flex items-center gap-1">📊 ผลการคำนวณหน้าร้าน</h3>
+                        <span class="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] rounded-full font-bold">✨ Retail Store</span>
                     </div>
                     <div class="space-y-2.5 text-xs">
                         <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                            <span class="text-slate-300">ราคาขายหน้าร้านสุทธิ:</span>
+                            <span class="text-slate-300">💰 ราคาขายหน้าร้านสุทธิ:</span>
                             <span id="res_store_price" class="text-base font-bold text-emerald-400">0.00 บาท</span>
                         </div>
                         <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                            <span class="text-slate-300">กำไรสุทธิเข้ากระเป๋า:</span>
+                            <span class="text-slate-300">💎 กำไรสุทธิเข้ากระเป๋า:</span>
                             <span id="res_store_profit" class="text-sm font-bold text-white">0.00 บาท</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-slate-300">อัตรากำไรสุทธิ (%GP):</span>
+                            <span class="text-slate-300">🔥 อัตรากำไรสุทธิ (%GP):</span>
                             <span id="res_store_gp" class="text-sm font-bold text-cyan-400">0.00%</span>
                         </div>
                     </div>
@@ -110,23 +110,23 @@
         </div>
 
         <!-- ================= PAGE 2: ONLINE CHANNELS ================= -->
-        <div id="pageOnline" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4 max-w-md mx-auto">
+        <div id="pageOnline" class="hidden bg-white p-6 rounded-3xl shadow-md border border-slate-200 space-y-4 max-w-md mx-auto">
             <div class="flex flex-col gap-2 border-b pb-3">
-                <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">🛵 ระบบคำนวณราคาช่องทางออนไลน์</h2>
+                <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1">🛵 ระบบคำนวณราคาช่องทางออนไลน์</h2>
                 <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl">
-                    <button onclick="switchOnlineTab('lineman')" id="btnSubLineman" class="py-1.5 text-xs font-bold rounded-lg transition-all bg-amber-500 text-white shadow-sm">LINE MAN Mart</button>
-                    <button onclick="switchOnlineTab('tele')" id="btnSubTele" class="py-1.5 text-xs font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-200">Telepharmacy</button>
+                    <button onclick="switchOnlineTab('lineman')" id="btnSubLineman" class="py-1.5 text-xs font-bold rounded-lg transition-all bg-amber-500 text-white shadow-sm">🛵 LINE MAN Mart</button>
+                    <button onclick="switchOnlineTab('tele')" id="btnSubTele" class="py-1.5 text-xs font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-200">💻 Telepharmacy</button>
                 </div>
             </div>
 
             <div class="space-y-3">
                 <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100 flex flex-col gap-2">
                     <div class="flex justify-between items-center">
-                        <span class="text-[11px] font-bold text-emerald-800 uppercase">ราคาอ้างอิง (หน้าร้าน):</span>
+                        <span class="text-[11px] font-bold text-emerald-800 uppercase">🏪 ราคาอ้างอิง (หน้าร้าน):</span>
                         <span class="text-sm font-bold text-emerald-900" id="refStorePriceDisplay">0.00 บาท</span>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-emerald-700 mb-1">หรือกรอกราคาเอง:</label>
+                        <label class="block text-[11px] font-bold text-emerald-700 mb-1">✍️ หรือกรอกราคาเอง:</label>
                         <input type="number" id="manual_ref_price" class="w-full px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs outline-none font-bold text-emerald-900" placeholder="0.00" oninput="calculateOnlineChannels()">
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                     🛵 LINE MAN Mart (ราคาหน้าร้าน × 1.38) | หัก GP 32.1%
                 </div>
                 <div class="space-y-3">
-                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2">
+                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2 border border-slate-800">
                         <div class="text-[11px] font-bold text-amber-400 uppercase">1. ราคาหลังหักส่วนลด (มีเศษ)</div>
                         <div class="text-base font-bold text-white" id="lm_dec_price">0.00 บาท</div>
                         <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 flex justify-between">
@@ -174,7 +174,7 @@
                     💻 Telepharmacy (ราคาหน้าร้าน × 1.48) | หัก GP 37.45%
                 </div>
                 <div class="space-y-3">
-                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2">
+                    <div class="bg-slate-900 text-white p-4 rounded-2xl space-y-2 border border-slate-800">
                         <div class="text-[11px] font-bold text-blue-400 uppercase">1. ราคาหลังหักส่วนลด (มีเศษ)</div>
                         <div class="text-base font-bold text-white" id="tele_dec_price">0.00 บาท</div>
                         <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 flex justify-between">
@@ -195,22 +195,22 @@
         </div>
 
         <!-- ================= PAGE 3: CREDIT CARD & INSTALLMENT (WITH EXPORT & PRINT) ================= -->
-        <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
+        <div id="pageCredit" class="hidden bg-white p-6 rounded-3xl shadow-md border border-slate-200 space-y-4">
             
             <!-- พื้นที่สำหรับสั่งพิมพ์และ Export -->
             <div id="printableArea" class="space-y-4">
                 
                 <div class="flex justify-between items-center border-b pb-3">
                     <div>
-                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ</h2>
-                        <p class="text-[10px] text-slate-500">Well Pharmacy - บันทึกวิเคราะห์การสั่งซื้อและผ่อนชำระ</p>
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1">💳 วิเคราะห์ต้นทุนซื้อสินค้าผ่านบัตรเครดิต / ผ่อนชำระ</h2>
+                        <p class="text-[10px] text-slate-500">✨ บันทึกวิเคราะห์การสั่งซื้อและผ่อนชำระสินค้า 📊</p>
                     </div>
                     <!-- ปุ่ม Export และ Print (ซ่อนเวลาสั่งพิมพ์จริง) -->
                     <div class="flex gap-1.5 no-print">
-                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1">
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">
                             📥 Export CSV
                         </button>
-                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1">
+                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-bold rounded-xl shadow-sm flex items-center gap-1 transition-all">
                             🖨️ พิมพ์รายงาน
                         </button>
                     </div>
@@ -219,11 +219,11 @@
                 <!-- ข้อมูลผู้จำหน่ายและเลขที่บิลเพิ่มเติม -->
                 <div class="grid grid-cols-2 gap-3 no-print bg-slate-50 p-3 rounded-2xl border border-slate-200">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">ชื่อผู้จำหน่าย / บริษัทเซลล์</label>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">🏢 ชื่อผู้จำหน่าย / บริษัทเซลล์</label>
                         <input type="text" id="c_supplier" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs outline-none font-semibold text-slate-800" placeholder="เช่น บริษัท ดีเคเอสเอช จำกัด">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">เลขที่ใบเสนอราคา / บิล</label>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">📄 เลขที่ใบเสนอราคา / บิล</label>
                         <input type="text" id="c_bill_no" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs outline-none font-semibold text-slate-800" placeholder="เช่น INV-2026-001">
                     </div>
                 </div>
@@ -231,15 +231,15 @@
                 <!-- ตั้งค่าส่วนกลางของบิล -->
                 <div class="grid grid-cols-3 gap-3 p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100">
                     <div>
-                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ค่าธรรมเนียมรูด (%)</label>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">💳 ค่าธรรมเนียมรูด (%)</label>
                         <input type="number" id="c_card_fee" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="1.00" oninput="renderBillRows()">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ดอกเบี้ยผ่อน/เดือน (%)</label>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">📈 ดอกเบี้ยผ่อน/เดือน (%)</label>
                         <input type="number" id="c_interest_rate" class="w-full px-3 py-2 bg-white border border-indigo-200 rounded-xl font-bold text-indigo-900 outline-none text-xs" value="0.74" oninput="renderBillRows()">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">ส่วนลดบิล (บริษัท)</label>
+                        <label class="block text-[11px] font-bold text-indigo-900 mb-1">🏷️ ส่วนลดบิล (บริษัท)</label>
                         <div class="flex">
                             <input type="number" id="c_bill_disc" class="w-full px-2 py-2 bg-white border border-indigo-200 rounded-l-xl font-bold text-indigo-900 outline-none text-xs" value="0" placeholder="ส่วนลด" oninput="renderBillRows()">
                             <select id="c_bill_disc_type" onchange="renderBillRows()" class="bg-indigo-100 border border-indigo-200 rounded-r-xl px-1.5 text-[11px] font-bold text-indigo-900 outline-none">
@@ -253,8 +253,8 @@
                 <!-- ตารางรายการสินค้าแบบกว้าง -->
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-700">ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
-                        <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700 no-print">+ เพิ่มรายการยา/สินค้า</button>
+                        <span class="text-xs font-bold text-slate-700 flex items-center gap-1">📋 ตารางวิเคราะห์แยกรายสินค้าและงวดผ่อน</span>
+                        <button onclick="addBillRow()" class="px-3 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-xl shadow-sm hover:bg-indigo-700 no-print transition-all">+ เพิ่มรายการยา/สินค้า</button>
                     </div>
 
                     <div class="overflow-x-auto border border-slate-200 rounded-2xl">
@@ -283,9 +283,9 @@
                 </div>
 
                 <!-- สรุปยอดรวมทั้งบิล -->
-                <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner">
+                <div class="p-4 bg-indigo-900 text-white rounded-2xl space-y-2 shadow-inner border border-indigo-800">
                     <div class="flex justify-between items-center text-xs border-b border-indigo-800 pb-2">
-                        <span class="text-indigo-200 font-bold">สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
+                        <span class="text-indigo-200 font-bold">✨ สรุปยอดรวมทั้งบิล (หลังหักส่วนลดและคิดค่าธรรมเนียมแล้ว):</span>
                         <span id="bill_total_net" class="font-extrabold text-amber-400 text-sm">0.00 บาท</span>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 text-[11px] text-indigo-200">
@@ -335,9 +335,9 @@
             const btnMainOnline = document.getElementById('btnMainOnline');
             const btnMainCredit = document.getElementById('btnMainCredit');
 
-            btnMainStore.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200";
-            btnMainOnline.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200";
-            btnMainCredit.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200";
+            btnMainStore.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200 flex items-center justify-center gap-1";
+            btnMainOnline.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200 flex items-center justify-center gap-1";
+            btnMainCredit.className = "py-2 text-xs font-bold rounded-xl transition-all text-slate-600 hover:bg-slate-200 flex items-center justify-center gap-1";
 
             pageStore.classList.add('hidden');
             pageOnline.classList.add('hidden');
@@ -345,10 +345,10 @@
 
             if (tab === 'store') {
                 pageStore.classList.remove('hidden');
-                btnMainStore.className = "py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm";
+                btnMainStore.className = "py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1";
             } else if (tab === 'online') {
                 pageOnline.classList.remove('hidden');
-                btnMainOnline.className = "py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm";
+                btnMainOnline.className = "py-2 text-xs font-bold rounded-xl transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1";
                 
                 document.getElementById('refStorePriceDisplay').innerText = currentStoreNetPrice.toFixed(2) + " บาท";
                 if(!document.getElementById('manual_ref_price').value && currentStoreNetPrice > 0) {
@@ -357,7 +357,7 @@
                 calculateOnlineChannels();
             } else if (tab === 'credit') {
                 pageCredit.classList.remove('hidden');
-                btnMainCredit.className = "py-2 text-xs font-bold rounded-xl transition-all bg-indigo-600 text-white shadow-sm";
+                btnMainCredit.className = "py-2 text-xs font-bold rounded-xl transition-all bg-indigo-600 text-white shadow-sm flex items-center justify-center gap-1";
             }
         }
 
@@ -493,12 +493,11 @@
             renderBillRows();
         }
 
-        // ฟังก์ชัน Export ข้อมูลเป็น CSV เพื่อเปิดใน Excel
         function exportToCSV() {
             let supplier = document.getElementById('c_supplier').value || "ไม่ระบุผู้จำหน่าย";
             let billNo = document.getElementById('c_bill_no').value || "ไม่ระบุเลขบิล";
             
-            let csvContent = "\uFEFF"; // BOM สำหรับรองรับภาษาไทยใน Excel
+            let csvContent = "\uFEFF";
             csvContent += `ผู้จำหน่าย: ${supplier}, เลขที่บิล: ${billNo}\n`;
             csvContent += "ชื่อสินค้า,จำนวน,ราคาทุนรวม,ราคารวมค่ารูดบัตร,ผ่อน 3 ด.,ผ่อน 4 ด.,ผ่อน 6 ด.,ผ่อน 8 ด.,ผ่อน 9 ด.,ผ่อน 10 ด.,ผ่อน 12 ด.\n";
 

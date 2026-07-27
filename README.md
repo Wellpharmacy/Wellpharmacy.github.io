@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Well Pharmacy - ระบบคำนวณราคาขายและช่องทางออนไลน์ Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Well Pharmacy - ระบบจัดการราคาขายและช่องทางออนไลน์</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style> body { font-family: 'Sarabun', sans-serif; } </style>
 </head>
 <body class="bg-slate-50 min-h-screen py-8 px-4">
@@ -21,8 +21,8 @@
                 <p class="text-sm text-slate-500 mt-1">แยกหน้าคำนวณหน้าร้าน และช่องทางออนไลน์ (พร้อมระบบส่วนลด LINE MAN & Telepharmacy)</p>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="switchMainTab('store')" id="btnMainStore" class="px-4 py-2.5 text-sm font-medium rounded-xl transition-all bg-emerald-600 text-white shadow-sm">🏪 หน้าคำนวณราคาหน้าร้าน</button>
-                <button onclick="switchMainTab('online')" id="btnMainOnline" class="px-4 py-2.5 text-sm font-medium rounded-xl transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">🛵 หน้า LINE MAN & Telepharmacy</button>
+                <button onclick="switchMainTab('store')" id="btnMainStore" class="px-4 py-2.5 text-sm font-medium rounded-xl transition-all bg-emerald-600 text-white shadow-sm">🏪 หน้าร้าน</button>
+                <button onclick="switchMainTab('online')" id="btnMainOnline" class="px-4 py-2.5 text-sm font-medium rounded-xl transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">🛵 ออนไลน์</button>
             </div>
         </div>
 
@@ -340,7 +340,6 @@
             let onlineDiscVal = parseFloat(document.getElementById('online_disc').value) || 0;
             let onlineDiscType = document.getElementById('online_disc_type').value;
 
-            // Helper function to apply discount
             function applyDiscount(rawPrice) {
                 let discountAmt = 0;
                 if (onlineDiscVal > 0) {
@@ -349,7 +348,6 @@
                 return Math.max(0, rawPrice - discountAmt);
             }
 
-            // 1. LINE MAN Mart (× 1.38) | GP 32.1%
             let lmRawPrice = baseRef * 1.38;
             let lmDecPrice = applyDiscount(lmRawPrice);
             let lmRoundPrice = Math.round(lmDecPrice);
@@ -361,7 +359,6 @@
             document.getElementById('lm_round_price').innerText = lmRoundPrice.toLocaleString() + " บาท";
             document.getElementById('lm_round_profit').innerText = (currentStoreCost > 0 ? lmProfit.toFixed(2) + " บาท" : "กรุณากรอกราคาทุน");
 
-            // 2. Telepharmacy (× 1.48) | GP 37.45%
             let teleRawPrice = baseRef * 1.48;
             let teleDecPrice = applyDiscount(teleRawPrice);
             let teleRoundPrice = Math.round(teleDecPrice);
